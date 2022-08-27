@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const ReactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema(
   {
@@ -20,10 +21,7 @@ const ThoughtSchema = new Schema(
     },
     reactions: [
       //These are like replies
-      {
-        type: Schema.Types.DocumentArray,
-        ref: 'Reaction',
-      },
+      ReactionSchema,
     ],
   },
   {

@@ -10,9 +10,12 @@ const UserSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
-      //must match a valid email address (look into Mongoose's matching validation)
+      required: 'An email is required!',
+      match: [
+        /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+        'Please enter a valid e-mail address',
+      ],
     },
     thought: [
       {
