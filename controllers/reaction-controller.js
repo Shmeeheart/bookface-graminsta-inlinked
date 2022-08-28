@@ -4,23 +4,27 @@ const reactionController = {
   // add reaction
   addReaction({ params, body }, res) {
     let newReaction = {
-      reactionText: body.reactionText,
+      reactionBody: body.reactionBody,
       username: body.username,
       userId: body.userId,
     };
 
+    // create reaction for the thought
     Reaction.create(newReaction)
       .then((dbReactionData) => {
-        User.findOneAndUpdate(
-          { _id: body.userId },
-          { $addToSet: { reactions: dbReactionData._id } },
-          { new: true }
-        ).then((newreactiondata) => res.json(newreactiondata));
+        Thought.findOneAndUpdate(
+          { _id: params.thoughtId },
+          { $push: { reactions: dbReactionData._id } },
+          { new: true, runValidators: true }
+        )
+          .populate({ path: 'reactions', select: '-__v' })
+          .select('-__v')
+          .then((dbReactionData) => res.json(dbReactionData));
       })
       .catch((err) => res.json(err));
   },
 
-  // delete thought
+  // delete reaction
   deleteReaction({ params }, res) {
     Reaction.findOneAndDelete({ _id: params.id })
       .then((dbReactionData) => {
