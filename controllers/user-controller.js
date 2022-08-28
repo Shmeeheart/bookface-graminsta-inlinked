@@ -4,14 +4,14 @@ const userController = {
   // get all users
   getAllUser(req, res) {
     User.find({})
-      .populate({
-        path: 'thoughts',
-        select: '-__v',
-      })
-      .populate({
-        path: 'friends',
-        select: '-__v',
-      })
+      //   .populate({
+      //     path: 'thoughts',
+      //     select: '-__v',
+      //   })
+      //   .populate({
+      //     path: 'friends',
+      //     select: '-__v',
+      //   })
       .select('-__v')
       .sort({ _id: -1 })
       .then((dbUserData) => res.json(dbUserData))
@@ -45,7 +45,7 @@ const userController = {
 
   // update user by id
   updateUser({ params, body }, res) {
-    User.findoOneAndUpdate({ _id: params.id }, body, {
+    User.findOneAndUpdate({ _id: params.id }, body, {
       new: true,
       runValidators: true,
     })
