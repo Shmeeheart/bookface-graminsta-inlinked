@@ -4,10 +4,6 @@ const thoughtController = {
   // get all thoughts
   getAllThought(req, res) {
     Thought.find({})
-      .populate({
-        path: 'thought',
-        select: '-__v',
-      })
       .select('-__v')
       .sort({ _id: -1 })
       .then((dbThoughtData) => res.json(dbThoughtData))

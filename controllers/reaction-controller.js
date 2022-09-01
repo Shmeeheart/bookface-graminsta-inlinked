@@ -10,29 +10,24 @@ const reactionController = {
     };
 
     // create reaction for the thought
-    Reaction.create(newReaction)
-      .then((dbReactionData) => {
-        Thought.findOneAndUpdate(
-          { _id: params.thoughtId },
-          { $push: { reactions: dbReactionData._id } },
-          { new: true, runValidators: true }
-        )
-          .populate({ path: 'reactions', select: '-__v' })
-          .select('-__v')
-          .then((dbReactionData) => res.json(dbReactionData));
-      })
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true, runValidators: true }
+    )
+      .populate({ path: 'reactions', select: '-__v' })
+      .select('-__v')
+      .then((dbReactionData) => res.json(dbReactionData))
       .catch((err) => res.json(err));
   },
 
   // delete reaction
   deleteReaction({ params }, res) {
-    Reaction.findOneAndDelete({ _id: params.id })
-      .then((dbReactionData) => {
-        User.findOneAndUpdate(
-          { _id: body.userId },
-          { $pull: { reactions: dbReactionData._id } }
-        ).then(() => res.json('Your reaction was deleted'));
-      })
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { _id: params.reactionId } } }
+    )
+      .then(() => res.json('Your reaction was deleted'))
       .catch((err) => res.status(400).json(err));
   },
 };

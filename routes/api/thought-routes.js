@@ -16,7 +16,7 @@ const {
 router.route('/').get(getAllThought);
 
 // get thought by ID and create new thought
-router.route('/:thoughtId').get(getThoughtById).post(createThought);
+router.route('/:thoughtId').get(getThoughtById);
 
 // get thought by ID and update
 router.route('/:thoughtId').put(updateThought);
